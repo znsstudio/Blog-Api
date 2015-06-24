@@ -1,5 +1,9 @@
 ## Blog Api
 
+Event is fired on create and delete which in information logged in laravel.log
+<br>
+BlogRepository is important of app which located inside App\Blog folder
+
 ### All Entries
 
 ~~~
