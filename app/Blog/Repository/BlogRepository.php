@@ -1,100 +1,108 @@
-<?php namespace App\Blog\Repository;
+<?php
+
+namespace app\Blog\Repository;
 
 use App\Article as Article;
 use App\Blog\Interfaces\BlogInterface;
 use App\Blog\Validators\BlogValidation;
 
-class BlogRepository implements BlogInterface {
+class BlogRepository implements BlogInterface
+{
+    public function __construct(BlogValidation $validate)
+    {
+        $this->validate = $validate;
+    }
 
+    /**
+     * Return all articles.
+     *
+     * @return articles
+     */
+    public function blogAll()
+    {
+        return Article::all();
+    }
 
-	public function __construct(BlogValidation $validate){
+    /**
+     * Get article by id.
+     *
+     * @param int id
+     * @return result
+     */
+    public function blogById($id)
+    {
+        $article = Article::find($id);
 
-		$this->validate = $validate;
+        if (empty($article)) {
+        	return response('Not Found',404);
+        }
+        
+        return $article;	
+    }
 
-	}
-	
-	public function blogAll() {
+    /**
+     * Save article
+     *
+     * @return article
+     */
+    public function blogStore()
+    {
+        $check = $this->validate->validateStore();
 
-		return Article::all();
+        if (empty($check['errors']->all())) {
+            $article = Article::create($check['data']);
 
-	}
+            \Event::fire(new \App\Events\BlogCreated($article));
 
-	public function blogById($id) {
+            return $article;
+        } else {
+            return $check['errors'];
+        }
+    }
 
-		return Article::findOrFail($id);
+    /**
+     * Update article by id.
+     *
+     * @param int id
+     * @return article
+     */
+    public function blogUpdate($id)
+    {
+        $check = $this->validate->validateUpdate();
 
-	}
+        if (empty($check['errors']->all())) {
+            $article = Article::findOrFail($id);
 
-	public function blogCreate() {}
+            $article->title = $check['data']['title'];
 
-	public function blogStore() {
+            $article->content = $check['data']['content'];
 
-		$check = $this->validate->validateStore();
+            $article->save();
 
-		if(empty($check['errors']->all())){
+            return $article;
+        } else {
+            return $check['errors'];
+        }
+    }
 
-			$article = Article::create($check['data']);
+    /**
+     * Delete article by id.
+     *
+     * @param int id
+     * @return status
+     */
+    public function blogDelete($id)
+    {
+        $article = Article::find($id);
 
-			\Event::fire(new \App\Events\BlogCreated($article));
+        if (!empty($article)) {
+            \Event::fire(new \App\Events\blogDeleted($id));
 
-			return $article;
+            $article->delete();
 
-		}
-		else
-		{		
-		
-			return $check['errors'];
-
-		}
-
-	}
-
-	public function blogUpdate($id) {
-
-		$check = $this->validate->validateUpdate();
-
-		if(empty($check['errors']->all())){
-
-			$article = Article::findOrFail($id);
-
-			$article->title = $check['data']['title'];
-
-			$article->content = $check['data']['content'];
-
-			$article->save();
-
-			return $article;
-
-		}
-		else
-		{		
-		
-			return $check['errors'];
-
-		}
-
-
-
-	}
-
-	public function blogDelete($id) {
-
-		$article = Article::find($id);
-
-		if(!empty($article)){
-
-			\Event::fire(new \App\Events\blogDeleted($id));
-
-			$article->delete();	
-			
-			return 'Deleted';	
-		
-		}
-		else
-		{
-			return 'Not found';
-		}	
-
-	}
-
+            return response('Deleted');
+        } else {
+            return response('Not Found',404);
+        }
+    }
 }

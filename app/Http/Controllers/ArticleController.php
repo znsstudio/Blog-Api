@@ -52,20 +52,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        
        return $this->blog->blogById($id);
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**

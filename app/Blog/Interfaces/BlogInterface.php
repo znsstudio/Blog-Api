@@ -6,8 +6,6 @@ interface BlogInterface {
 
 	public function blogById($id);
 
-	public function blogCreate();
-
 	public function blogStore();
 
 	public function blogUpdate($id);
