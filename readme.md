@@ -1,27 +1,109 @@
-## Laravel PHP Framework
+## Blog Api
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+### All Entries
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+~~~
+GET /article HTTP/1.1
+Host: blog.local
+Content-Type: application/x-www-form-urlencoded
+~~~
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+Response ( on success )
 
-## Official Documentation
+~~~
+{
+"title": "Blog Api",
+"content": "Simple Blog Api",
+"updated_at": "2015-06-24 02:59:52",
+"created_at": "2015-06-24 02:59:52",
+"id": 19
+}
+~~~
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+### One Entry
 
-## Contributing
+~~~
+GET /article/1 HTTP/1.1
+Host: blog.local
+Content-Type: application/x-www-form-urlencoded
+~~~
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+Response ( on success )
 
-## Security Vulnerabilities
+~~~
+{
+"title": "Blog Api",
+"content": "Simple Blog Api",
+"updated_at": "2015-06-24 02:59:52",
+"created_at": "2015-06-24 02:59:52",
+"id": 19
+}
+~~~
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+### Create
 
-### License
+~~~
+POST /article HTTP/1.1
+Host: blog.local
+Content-Type: application/x-www-form-urlencoded
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+title=Blog+Api&content=Simple+Blog+Api
+~~~
+
+Response ( on success )
+
+~~~
+{
+"title": "Blog Api",
+"content": "Simple Blog Api",
+"updated_at": "2015-06-24 02:59:52",
+"created_at": "2015-06-24 02:59:52",
+"id": 19
+}
+~~~
+
+### Updae
+
+~~~
+PUT /article/1 HTTP/1.1
+Host: blog.local
+Content-Type: application/x-www-form-urlencoded
+
+title=Blog+Api&content=Simple+Blog+Api+2
+~~~
+
+Response ( on success )
+
+~~~
+{
+"title": "Blog Api",
+"content": "Simple Blog Api 2",
+"updated_at": "2015-06-24 02:59:52",
+"created_at": "2015-06-24 02:59:52",
+"id": 19
+}
+~~~
+
+### Delete
+
+
+~~~
+DELETE /article/1 HTTP/1.1
+Host: blog.local
+Content-Type: application/x-www-form-urlencoded
+
+title=Blog+Api&content=Simple+Blog+Api+2
+~~~
+
+Response ( on success )
+
+~~~
+Deleted
+~~~
+
+
+Response ( on fail )
+
+~~~
+Not Found
+~~~
