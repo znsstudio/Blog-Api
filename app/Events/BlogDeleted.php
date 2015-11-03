@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Events;
+namespace app\Events;
 
-use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class BlogDeleted extends Event
 {

@@ -1,17 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Blog\Repository\BlogRepository;
 
 class ArticleController extends Controller
 {
-
-    public function __construct(BlogRepository $blog){
-
+    public function __construct(BlogRepository $blog)
+    {
         $this->blog = $blog;
-
     }
 
     /**
@@ -47,18 +44,20 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function show($id)
     {
-       return $this->blog->blogById($id);
+        return $this->blog->blogById($id);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function update($id)
@@ -69,7 +68,8 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function destroy($id)

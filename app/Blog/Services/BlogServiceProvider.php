@@ -1,13 +1,14 @@
-<?php namespace App\Blog\Services;
+<?php
+
+namespace app\Blog\Services;
 
 use App;
- 
 use Illuminate\Support\ServiceProvider;
- 
-class BlogServiceProvider extends ServiceProvider {
 
+class BlogServiceProvider extends ServiceProvider
+{
     public function register()
     {
-        App::bind('App\\Blog\\Interfaces\\BlogInterface','App\\Blog\\Repository\\BlogRepository');
+        App::bind('App\\Blog\\Interfaces\\BlogInterface', 'App\\Blog\\Repository\\BlogRepository');
     }
 }

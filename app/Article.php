@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace app;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-     protected $fillable = array('title', 'content');
+    protected $fillable = ['title', 'content'];
 }

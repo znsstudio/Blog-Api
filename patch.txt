@@ -1,0 +1,1063 @@
+diff --git a/app/Article.php b/app/Article.php
+index e3995e08fdca9f127d657445eaa1a81e2c15611c..fa2ca70f7c1ce071448cb2b9a6765caf82751c8a 100644
+--- a/app/Article.php
++++ b/app/Article.php
+@@ -1,10 +1,10 @@
+ <?php
+ 
+-namespace App;
++namespace app;
+ 
+ use Illuminate\Database\Eloquent\Model;
+ 
+ class Article extends Model
+ {
+-     protected $fillable = array('title', 'content');
++    protected $fillable = ['title', 'content'];
+ }
+diff --git a/app/Blog/Interfaces/BlogInterface.php b/app/Blog/Interfaces/BlogInterface.php
+index f234a6acdf484921beaac62c6e7d0adcb1e8627d..93a0cd5f89c03bfa6dbe7d236d0f2c2d2310d7c6 100644
+--- a/app/Blog/Interfaces/BlogInterface.php
++++ b/app/Blog/Interfaces/BlogInterface.php
+@@ -1,15 +1,16 @@
+-<?php namespace App\Blog\Interfaces;
++<?php
+ 
+-interface BlogInterface {
+-	
+-	public function blogAll();
++namespace app\Blog\Interfaces;
+ 
+-	public function blogById($id);
++interface BlogInterface
++{
++    public function blogAll();
+ 
+-	public function blogStore();
++    public function blogById($id);
+ 
+-	public function blogUpdate($id);
++    public function blogStore();
+ 
+-	public function blogDelete($id);
++    public function blogUpdate($id);
+ 
+-}
+\ No newline at end of file
++    public function blogDelete($id);
++}
+diff --git a/app/Blog/Repository/BlogRepository.php b/app/Blog/Repository/BlogRepository.php
+index 3524f10997be44ee37746fc1cf2ede8d29fcc9db..f9e641009dd5c1059abb7d60fb42e070eb238c04 100644
+--- a/app/Blog/Repository/BlogRepository.php
++++ b/app/Blog/Repository/BlogRepository.php
+@@ -27,6 +27,7 @@ class BlogRepository implements BlogInterface
+      * Get article by id.
+      *
+      * @param int id
++     *
+      * @return result
+      */
+     public function blogById($id)
+@@ -34,14 +35,14 @@ class BlogRepository implements BlogInterface
+         $article = Article::find($id);
+ 
+         if (empty($article)) {
+-        	return response('Not Found',404);
++            return response('Not Found', 404);
+         }
+-        
+-        return $article;	
++
++        return $article;
+     }
+ 
+     /**
+-     * Save article
++     * Save article.
+      *
+      * @return article
+      */
+@@ -64,6 +65,7 @@ class BlogRepository implements BlogInterface
+      * Update article by id.
+      *
+      * @param int id
++     *
+      * @return article
+      */
+     public function blogUpdate($id)
+@@ -89,6 +91,7 @@ class BlogRepository implements BlogInterface
+      * Delete article by id.
+      *
+      * @param int id
++     *
+      * @return status
+      */
+     public function blogDelete($id)
+@@ -102,7 +105,7 @@ class BlogRepository implements BlogInterface
+ 
+             return response('Deleted');
+         } else {
+-            return response('Not Found',404);
++            return response('Not Found', 404);
+         }
+     }
+ }
+diff --git a/app/Blog/Services/BlogServiceProvider.php b/app/Blog/Services/BlogServiceProvider.php
+index 7dd39b4323d44de04e6070f9938ef43aa1b5416e..0488c3491b7910f7f69360cd15fa2e10cfce2b78 100644
+--- a/app/Blog/Services/BlogServiceProvider.php
++++ b/app/Blog/Services/BlogServiceProvider.php
+@@ -1,13 +1,14 @@
+-<?php namespace App\Blog\Services;
++<?php
++
++namespace app\Blog\Services;
+ 
+ use App;
+- 
+ use Illuminate\Support\ServiceProvider;
+- 
+-class BlogServiceProvider extends ServiceProvider {
+ 
++class BlogServiceProvider extends ServiceProvider
++{
+     public function register()
+     {
+-        App::bind('App\\Blog\\Interfaces\\BlogInterface','App\\Blog\\Repository\\BlogRepository');
++        App::bind('App\\Blog\\Interfaces\\BlogInterface', 'App\\Blog\\Repository\\BlogRepository');
+     }
+-}
+\ No newline at end of file
++}
+diff --git a/app/Blog/Validators/BlogValidation.php b/app/Blog/Validators/BlogValidation.php
+index 284b853873c043c08293fb62750867c8fdd7ff93..32c66f27a597d5754a472d80d3272beeb989c765 100644
+--- a/app/Blog/Validators/BlogValidation.php
++++ b/app/Blog/Validators/BlogValidation.php
+@@ -15,7 +15,7 @@ class BlogValidation
+     public function validateStore()
+     {
+         $validator = Validator::make(Request::all(), [
+-                'title' => 'required|unique:articles|max:100',
++                'title'   => 'required|unique:articles|max:100',
+                 'content' => 'required',
+             ]);
+ 
+@@ -29,7 +29,7 @@ class BlogValidation
+     public function validateUpdate()
+     {
+         $validator = Validator::make(Request::all(), [
+-                    'title' => 'required|unique:articles|max:100',
++                    'title'   => 'required|unique:articles|max:100',
+                     'content' => 'required',
+                 ]);
+ 
+diff --git a/app/Console/Commands/Inspire.php b/app/Console/Commands/Inspire.php
+index db9ab85422f50760857a432bfec55323243b0fe6..b2f7b0e26a5a52beb7bc3c67835fbcc02dfd05cd 100644
+--- a/app/Console/Commands/Inspire.php
++++ b/app/Console/Commands/Inspire.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace App\Console\Commands;
++namespace app\Console\Commands;
+ 
+ use Illuminate\Console\Command;
+ use Illuminate\Foundation\Inspiring;
+diff --git a/app/Console/Kernel.php b/app/Console/Kernel.php
+index 0aad25983fe2271024bf3fd556bdb3b3d5d7c52d..c8f008aaf217547e0bf3bdf812d4412deeb4d843 100644
+--- a/app/Console/Kernel.php
++++ b/app/Console/Kernel.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace App\Console;
++namespace app\Console;
+ 
+ use Illuminate\Console\Scheduling\Schedule;
+ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+@@ -19,7 +19,8 @@ class Kernel extends ConsoleKernel
+     /**
+      * Define the application's command schedule.
+      *
+-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
++     * @param \Illuminate\Console\Scheduling\Schedule $schedule
++     *
+      * @return void
+      */
+     protected function schedule(Schedule $schedule)
+diff --git a/app/Events/BlogCreated.php b/app/Events/BlogCreated.php
+index 78665a26d10ac9423a4324078222eed7e02b2898..15c271d3c986162612a6a739acc82375caac2f10 100644
+--- a/app/Events/BlogCreated.php
++++ b/app/Events/BlogCreated.php
+@@ -1,11 +1,9 @@
+ <?php
+ 
+-namespace App\Events;
++namespace app\Events;
+ 
+ use App\Article;
+-use App\Events\Event;
+ use Illuminate\Queue\SerializesModels;
+-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+ 
+ class BlogCreated extends Event
+ {
+diff --git a/app/Events/BlogDeleted.php b/app/Events/BlogDeleted.php
+index 3a70db5f2c49064dd6276f0fec1f90739b6f93f0..f56c94659f57ea0fbe8dca958683b0c8c04b25b6 100644
+--- a/app/Events/BlogDeleted.php
++++ b/app/Events/BlogDeleted.php
+@@ -1,10 +1,8 @@
+ <?php
+ 
+-namespace App\Events;
++namespace app\Events;
+ 
+-use App\Events\Event;
+ use Illuminate\Queue\SerializesModels;
+-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+ 
+ class BlogDeleted extends Event
+ {
+diff --git a/app/Events/Event.php b/app/Events/Event.php
+index ba2f88838c0182fc39b8324aedfefb03dfb843ac..c1a17714cc4350617cf8bd250ff5892c71e9a2fd 100644
+--- a/app/Events/Event.php
++++ b/app/Events/Event.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace App\Events;
++namespace app\Events;
+ 
+ abstract class Event
+ {
+diff --git a/app/Events/SomeEvent.php b/app/Events/SomeEvent.php
+index c0e9b8192a225f4a799bb3077e31d0e65e7e9d32..0f113e09e61dafe94c5366a1e92fb2e6ce017fe1 100644
+--- a/app/Events/SomeEvent.php
++++ b/app/Events/SomeEvent.php
+@@ -1,10 +1,8 @@
+ <?php
+ 
+-namespace App\Events;
++namespace app\Events;
+ 
+-use App\Events\Event;
+ use Illuminate\Queue\SerializesModels;
+-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+ 
+ class SomeEvent extends Event
+ {
+diff --git a/app/Exceptions/Handler.php b/app/Exceptions/Handler.php
+index 2cc435b720fe66206a4ffaf80154b9bcfec4a978..737228835ac9264912633ae45dd9229fe687769a 100644
+--- a/app/Exceptions/Handler.php
++++ b/app/Exceptions/Handler.php
+@@ -1,10 +1,10 @@
+ <?php
+ 
+-namespace App\Exceptions;
++namespace app\Exceptions;
+ 
+ use Exception;
+-use Symfony\Component\HttpKernel\Exception\HttpException;
+ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
++use Symfony\Component\HttpKernel\Exception\HttpException;
+ 
+ class Handler extends ExceptionHandler
+ {
+@@ -22,7 +22,8 @@ class Handler extends ExceptionHandler
+      *
+      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
+      *
+-     * @param  \Exception  $e
++     * @param \Exception $e
++     *
+      * @return void
+      */
+     public function report(Exception $e)
+@@ -33,8 +34,9 @@ class Handler extends ExceptionHandler
+     /**
+      * Render an exception into an HTTP response.
+      *
+-     * @param  \Illuminate\Http\Request  $request
+-     * @param  \Exception  $e
++     * @param \Illuminate\Http\Request $request
++     * @param \Exception               $e
++     *
+      * @return \Illuminate\Http\Response
+      */
+     public function render($request, Exception $e)
+diff --git a/app/Http/Controllers/ArticleController.php b/app/Http/Controllers/ArticleController.php
+index b76af457d208e504f0a9c1133f58212b4c99038a..0b9a67867b60d1a40ab432b4518328f79d413548 100644
+--- a/app/Http/Controllers/ArticleController.php
++++ b/app/Http/Controllers/ArticleController.php
+@@ -1,17 +1,14 @@
+ <?php
+ 
+-namespace App\Http\Controllers;
++namespace app\Http\Controllers;
+ 
+-use App\Http\Controllers\Controller;
+ use App\Blog\Repository\BlogRepository;
+ 
+ class ArticleController extends Controller
+ {
+-
+-    public function __construct(BlogRepository $blog){
+-
++    public function __construct(BlogRepository $blog)
++    {
+         $this->blog = $blog;
+-
+     }
+ 
+     /**
+@@ -47,18 +44,20 @@ class ArticleController extends Controller
+     /**
+      * Display the specified resource.
+      *
+-     * @param  int  $id
++     * @param int $id
++     *
+      * @return Response
+      */
+     public function show($id)
+     {
+-       return $this->blog->blogById($id);
++        return $this->blog->blogById($id);
+     }
+ 
+     /**
+      * Update the specified resource in storage.
+      *
+-     * @param  int  $id
++     * @param int $id
++     *
+      * @return Response
+      */
+     public function update($id)
+@@ -69,7 +68,8 @@ class ArticleController extends Controller
+     /**
+      * Remove the specified resource from storage.
+      *
+-     * @param  int  $id
++     * @param int $id
++     *
+      * @return Response
+      */
+     public function destroy($id)
+diff --git a/app/Http/Controllers/Auth/AuthController.php b/app/Http/Controllers/Auth/AuthController.php
+index df32bfcc10abc137014c271a084bd07818fde068..4b167236dfb206015f1f940549c1ec7c822a607f 100644
+--- a/app/Http/Controllers/Auth/AuthController.php
++++ b/app/Http/Controllers/Auth/AuthController.php
+@@ -1,11 +1,11 @@
+ <?php
+ 
+-namespace App\Http\Controllers\Auth;
++namespace app\Http\Controllers\Auth;
+ 
+-use App\User;
+-use Validator;
+ use App\Http\Controllers\Controller;
++use App\User;
+ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
++use Validator;
+ 
+ class AuthController extends Controller
+ {
+@@ -35,14 +35,15 @@ class AuthController extends Controller
+     /**
+      * Get a validator for an incoming registration request.
+      *
+-     * @param  array  $data
++     * @param array $data
++     *
+      * @return \Illuminate\Contracts\Validation\Validator
+      */
+     protected function validator(array $data)
+     {
+         return Validator::make($data, [
+-            'name' => 'required|max:255',
+-            'email' => 'required|email|max:255|unique:users',
++            'name'     => 'required|max:255',
++            'email'    => 'required|email|max:255|unique:users',
+             'password' => 'required|confirmed|min:6',
+         ]);
+     }
+@@ -50,14 +51,15 @@ class AuthController extends Controller
+     /**
+      * Create a new user instance after a valid registration.
+      *
+-     * @param  array  $data
++     * @param array $data
++     *
+      * @return User
+      */
+     protected function create(array $data)
+     {
+         return User::create([
+-            'name' => $data['name'],
+-            'email' => $data['email'],
++            'name'     => $data['name'],
++            'email'    => $data['email'],
+             'password' => bcrypt($data['password']),
+         ]);
+     }
+diff --git a/app/Http/Controllers/Auth/PasswordController.php b/app/Http/Controllers/Auth/PasswordController.php
+index 1ceed97bbaefcff82a5f4d081a91bcf8b24b16fe..195a0ab687ecb4f076a791bb9c61775d43f0652f 100644
+--- a/app/Http/Controllers/Auth/PasswordController.php
++++ b/app/Http/Controllers/Auth/PasswordController.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace App\Http\Controllers\Auth;
++namespace app\Http\Controllers\Auth;
+ 
+ use App\Http\Controllers\Controller;
+ use Illuminate\Foundation\Auth\ResetsPasswords;
+diff --git a/app/Http/Controllers/Controller.php b/app/Http/Controllers/Controller.php
+index 9be752a138c14d57d9ef7b265e55ec621807692b..dd97387929df0190490a50c3df7b331f87cbcc55 100644
+--- a/app/Http/Controllers/Controller.php
++++ b/app/Http/Controllers/Controller.php
+@@ -1,10 +1,10 @@
+ <?php
+ 
+-namespace App\Http\Controllers;
++namespace app\Http\Controllers;
+ 
+ use Illuminate\Foundation\Bus\DispatchesJobs;
+-use Illuminate\Routing\Controller as BaseController;
+ use Illuminate\Foundation\Validation\ValidatesRequests;
++use Illuminate\Routing\Controller as BaseController;
+ 
+ abstract class Controller extends BaseController
+ {
+diff --git a/app/Http/Kernel.php b/app/Http/Kernel.php
+index b32f3c1ee601d782001419cd60a5a1c2ebf364e1..9e619ed632687e465a287201edb434384a146eb8 100644
+--- a/app/Http/Kernel.php
++++ b/app/Http/Kernel.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace App\Http;
++namespace app\Http;
+ 
+ use Illuminate\Foundation\Http\Kernel as HttpKernel;
+ 
+@@ -25,8 +25,8 @@ class Kernel extends HttpKernel
+      * @var array
+      */
+     protected $routeMiddleware = [
+-        'auth' => \App\Http\Middleware\Authenticate::class,
++        'auth'       => \App\Http\Middleware\Authenticate::class,
+         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
++        'guest'      => \App\Http\Middleware\RedirectIfAuthenticated::class,
+     ];
+ }
+diff --git a/app/Http/Middleware/Authenticate.php b/app/Http/Middleware/Authenticate.php
+index 4fbafecf860d6bb7801fbd3760150cde9aa94513..93d3e73cfc6c89130e99ae0477a14e2e30342d26 100644
+--- a/app/Http/Middleware/Authenticate.php
++++ b/app/Http/Middleware/Authenticate.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace App\Http\Middleware;
++namespace app\Http\Middleware;
+ 
+ use Closure;
+ use Illuminate\Contracts\Auth\Guard;
+@@ -17,7 +17,8 @@ class Authenticate
+     /**
+      * Create a new filter instance.
+      *
+-     * @param  Guard  $auth
++     * @param Guard $auth
++     *
+      * @return void
+      */
+     public function __construct(Guard $auth)
+@@ -28,8 +29,9 @@ class Authenticate
+     /**
+      * Handle an incoming request.
+      *
+-     * @param  \Illuminate\Http\Request  $request
+-     * @param  \Closure  $next
++     * @param \Illuminate\Http\Request $request
++     * @param \Closure                 $next
++     *
+      * @return mixed
+      */
+     public function handle($request, Closure $next)
+diff --git a/app/Http/Middleware/EncryptCookies.php b/app/Http/Middleware/EncryptCookies.php
+index 3aa15f8dd91d421fa5bc761866f762b8e90c6c74..f587d7632bf663b815856368cbcd56dea52e1641 100644
+--- a/app/Http/Middleware/EncryptCookies.php
++++ b/app/Http/Middleware/EncryptCookies.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace App\Http\Middleware;
++namespace app\Http\Middleware;
+ 
+ use Illuminate\Cookie\Middleware\EncryptCookies as BaseEncrypter;
+ 
+diff --git a/app/Http/Middleware/RedirectIfAuthenticated.php b/app/Http/Middleware/RedirectIfAuthenticated.php
+index 495b629cbedb39474df802f7b263181cebb45cf8..9c3ac505e4f6cfd159d4569918c3a73e37b181ab 100644
+--- a/app/Http/Middleware/RedirectIfAuthenticated.php
++++ b/app/Http/Middleware/RedirectIfAuthenticated.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace App\Http\Middleware;
++namespace app\Http\Middleware;
+ 
+ use Closure;
+ use Illuminate\Contracts\Auth\Guard;
+@@ -17,7 +17,8 @@ class RedirectIfAuthenticated
+     /**
+      * Create a new filter instance.
+      *
+-     * @param  Guard  $auth
++     * @param Guard $auth
++     *
+      * @return void
+      */
+     public function __construct(Guard $auth)
+@@ -28,8 +29,9 @@ class RedirectIfAuthenticated
+     /**
+      * Handle an incoming request.
+      *
+-     * @param  \Illuminate\Http\Request  $request
+-     * @param  \Closure  $next
++     * @param \Illuminate\Http\Request $request
++     * @param \Closure                 $next
++     *
+      * @return mixed
+      */
+     public function handle($request, Closure $next)
+diff --git a/app/Http/Middleware/VerifyCsrfToken.php b/app/Http/Middleware/VerifyCsrfToken.php
+index a2c3541410796ce4a59971917e06de17840bd9c6..474d588214333e0082783b7b0e03ad481a9b9e72 100644
+--- a/app/Http/Middleware/VerifyCsrfToken.php
++++ b/app/Http/Middleware/VerifyCsrfToken.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace App\Http\Middleware;
++namespace app\Http\Middleware;
+ 
+ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
+ 
+diff --git a/app/Http/Requests/Request.php b/app/Http/Requests/Request.php
+index 76b2ffd43e4c8817502868f608b5d487d39c30d3..1e3ddd448def0a57994520eca3426d758f0c684a 100644
+--- a/app/Http/Requests/Request.php
++++ b/app/Http/Requests/Request.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace App\Http\Requests;
++namespace app\Http\Requests;
+ 
+ use Illuminate\Foundation\Http\FormRequest;
+ 
+diff --git a/app/Http/Requests/StoreBlogPostRequest.php b/app/Http/Requests/StoreBlogPostRequest.php
+index c5aa4ecbf0e0e0907fa549f4b7f20cb391170ac6..54ca816ad615cc153b9247a1023e841039648073 100644
+--- a/app/Http/Requests/StoreBlogPostRequest.php
++++ b/app/Http/Requests/StoreBlogPostRequest.php
+@@ -1,12 +1,9 @@
+ <?php
+ 
+-namespace App\Http\Requests;
+-
+-use App\Http\Requests\Request;
++namespace app\Http\Requests;
+ 
+ class StoreBlogPostRequest extends Request
+ {
+-
+     /**
+      * Determine if the user is authorized to make this request.
+      *
+@@ -25,7 +22,7 @@ class StoreBlogPostRequest extends Request
+     public function rules()
+     {
+         return [
+-            'title' => 'required|unique:articles|max:255',
++            'title'   => 'required|unique:articles|max:255',
+             'content' => 'required',
+         ];
+     }
+diff --git a/app/Jobs/Job.php b/app/Jobs/Job.php
+index d99ae7e82674c8dc2bdfbe22f688d019682a6c9d..880dddd819eaa661228e47615a936a616da03838 100644
+--- a/app/Jobs/Job.php
++++ b/app/Jobs/Job.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace App\Jobs;
++namespace app\Jobs;
+ 
+ use Illuminate\Bus\Queueable;
+ 
+diff --git a/app/Listeners/EventListener.php b/app/Listeners/EventListener.php
+index e9ce565071d757faee0e9e1c62414925acb1c6df..9e5bf8506e7d4017b37aad8240592321117c95d6 100644
+--- a/app/Listeners/EventListener.php
++++ b/app/Listeners/EventListener.php
+@@ -1,10 +1,8 @@
+ <?php
+ 
+-namespace App\Listeners;
++namespace app\Listeners;
+ 
+ use App\Events\SomeEvent;
+-use Illuminate\Queue\InteractsWithQueue;
+-use Illuminate\Contracts\Queue\ShouldQueue;
+ 
+ class EventListener
+ {
+@@ -21,7 +19,8 @@ class EventListener
+     /**
+      * Handle the event.
+      *
+-     * @param  SomeEvent  $event
++     * @param SomeEvent $event
++     *
+      * @return void
+      */
+     public function handle(SomeEvent $event)
+diff --git a/app/Listeners/LogBlogCreated.php b/app/Listeners/LogBlogCreated.php
+index 716eb26fd2727c21acd5947474a30345c34459bf..ab84c39d128c0b898564134454fd64435701168c 100644
+--- a/app/Listeners/LogBlogCreated.php
++++ b/app/Listeners/LogBlogCreated.php
+@@ -1,10 +1,8 @@
+ <?php
+ 
+-namespace App\Listeners;
++namespace app\Listeners;
+ 
+ use App\Events\BlogCreated;
+-use Illuminate\Queue\InteractsWithQueue;
+-use Illuminate\Contracts\Queue\ShouldQueue;
+ use Log;
+ 
+ class LogBlogCreated
+@@ -22,7 +20,8 @@ class LogBlogCreated
+     /**
+      * Handle the event.
+      *
+-     * @param  BlogCreated  $event
++     * @param BlogCreated $event
++     *
+      * @return void
+      */
+     public function handle(BlogCreated $event)
+diff --git a/app/Listeners/LogBlogDeleted.php b/app/Listeners/LogBlogDeleted.php
+index 9785085d4da3921b266b467766b1bd9ff3a6015e..978437ce0af104569d9608a104fd9ce6937bffd0 100644
+--- a/app/Listeners/LogBlogDeleted.php
++++ b/app/Listeners/LogBlogDeleted.php
+@@ -1,10 +1,8 @@
+ <?php
+ 
+-namespace App\Listeners;
++namespace app\Listeners;
+ 
+ use App\Events\BlogDeleted;
+-use Illuminate\Queue\InteractsWithQueue;
+-use Illuminate\Contracts\Queue\ShouldQueue;
+ use Log;
+ 
+ class LogBlogDeleted
+@@ -22,7 +20,8 @@ class LogBlogDeleted
+     /**
+      * Handle the event.
+      *
+-     * @param  BlogDeleted  $event
++     * @param BlogDeleted $event
++     *
+      * @return void
+      */
+     public function handle(BlogDeleted $event)
+diff --git a/app/Providers/AppServiceProvider.php b/app/Providers/AppServiceProvider.php
+index 35471f6ff156325ed0fdb98b03e611c2cd43f675..9f2289a6e4adf4988bb8f175c2d6d11299091c75 100644
+--- a/app/Providers/AppServiceProvider.php
++++ b/app/Providers/AppServiceProvider.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace App\Providers;
++namespace app\Providers;
+ 
+ use Illuminate\Support\ServiceProvider;
+ 
+diff --git a/app/Providers/BlogCreated.php b/app/Providers/BlogCreated.php
+index 13c1ba827a7908ede69d8090ace93512da25dc6a..70a99c2a19736ad26ae061607c30ee195d40df45 100644
+--- a/app/Providers/BlogCreated.php
++++ b/app/Providers/BlogCreated.php
+@@ -1,10 +1,9 @@
+ <?php
+ 
+-namespace App\Providers;
++namespace app\Providers;
+ 
+ use App\Events\Event;
+ use Illuminate\Queue\SerializesModels;
+-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+ 
+ class BlogCreated extends Event
+ {
+diff --git a/app/Providers/EventServiceProvider.php b/app/Providers/EventServiceProvider.php
+index e47e180e447b76a71ec0c0e8e8beb70780dc8855..f82e86407a04ec37195a9e2ac9eb73b31e27c7ea 100644
+--- a/app/Providers/EventServiceProvider.php
++++ b/app/Providers/EventServiceProvider.php
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-namespace App\Providers;
++namespace app\Providers;
+ 
+ use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
+ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+@@ -21,13 +21,14 @@ class EventServiceProvider extends ServiceProvider
+         ],
+         'App\Events\BlogDeleted' => [
+             'App\Listeners\LogBlogDeleted',
+-        ],        
++        ],
+     ];
+ 
+     /**
+      * Register any other events for your application.
+      *
+-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
++     * @param \Illuminate\Contracts\Events\Dispatcher $events
++     *
+      * @return void
+      */
+     public function boot(DispatcherContract $events)
+diff --git a/app/Providers/LogBlogCreated.php b/app/Providers/LogBlogCreated.php
+index 80eee33b72778d9038b4c43b3cb9209ef778cc82..dc2d4c0d8f42933cbb358965df94b80187590a66 100644
+--- a/app/Providers/LogBlogCreated.php
++++ b/app/Providers/LogBlogCreated.php
+@@ -1,10 +1,6 @@
+ <?php
+ 
+-namespace App\Providers;
+-
+-use App\Providers\BlogCreated;
+-use Illuminate\Queue\InteractsWithQueue;
+-use Illuminate\Contracts\Queue\ShouldQueue;
++namespace app\Providers;
+ 
+ class LogBlogCreated
+ {
+@@ -21,7 +17,8 @@ class LogBlogCreated
+     /**
+      * Handle the event.
+      *
+-     * @param  BlogCreated  $event
++     * @param BlogCreated $event
++     *
+      * @return void
+      */
+     public function handle(BlogCreated $event)
+diff --git a/app/Providers/RouteServiceProvider.php b/app/Providers/RouteServiceProvider.php
+index d50b1c0f8d6ffc60a3acefe20e7e97976537d637..1dc7b2a9712183bd45faf608f8de8cac2e014458 100644
+--- a/app/Providers/RouteServiceProvider.php
++++ b/app/Providers/RouteServiceProvider.php
+@@ -1,9 +1,9 @@
+ <?php
+ 
+-namespace App\Providers;
++namespace app\Providers;
+ 
+-use Illuminate\Routing\Router;
+ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
++use Illuminate\Routing\Router;
+ 
+ class RouteServiceProvider extends ServiceProvider
+ {
+@@ -19,7 +19,8 @@ class RouteServiceProvider extends ServiceProvider
+     /**
+      * Define your route model bindings, pattern filters, etc.
+      *
+-     * @param  \Illuminate\Routing\Router  $router
++     * @param \Illuminate\Routing\Router $router
++     *
+      * @return void
+      */
+     public function boot(Router $router)
+@@ -32,7 +33,8 @@ class RouteServiceProvider extends ServiceProvider
+     /**
+      * Define the routes for the application.
+      *
+-     * @param  \Illuminate\Routing\Router  $router
++     * @param \Illuminate\Routing\Router $router
++     *
+      * @return void
+      */
+     public function map(Router $router)
+diff --git a/app/User.php b/app/User.php
+index 86eabed1fc43297befd8b97ea18786cbf099048a..de512910381288b9180f5d98303f385198f0172f 100644
+--- a/app/User.php
++++ b/app/User.php
+@@ -1,12 +1,12 @@
+ <?php
+ 
+-namespace App;
++namespace app;
+ 
+ use Illuminate\Auth\Authenticatable;
+-use Illuminate\Database\Eloquent\Model;
+ use Illuminate\Auth\Passwords\CanResetPassword;
+ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
++use Illuminate\Database\Eloquent\Model;
+ 
+ class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+ {
+diff --git a/config/auth.php b/config/auth.php
+index 7f4a87fbae7359413168e9a1461e1944cfdb2f24..99d06307f55413f64298028278b8af7e1a6963e8 100644
+--- a/config/auth.php
++++ b/config/auth.php
+@@ -59,8 +59,8 @@ return [
+     */
+ 
+     'password' => [
+-        'email' => 'emails.password',
+-        'table' => 'password_resets',
++        'email'  => 'emails.password',
++        'table'  => 'password_resets',
+         'expire' => 60,
+     ],
+ 
+diff --git a/config/broadcasting.php b/config/broadcasting.php
+index 36f9b3c146f12c1a0bda370843bc03df186d3f3a..365ece00d61fb0a79cd3f494ee29eedfcb26fb83 100644
+--- a/config/broadcasting.php
++++ b/config/broadcasting.php
+@@ -30,13 +30,13 @@ return [
+ 
+         'pusher' => [
+             'driver' => 'pusher',
+-            'key' => env('PUSHER_KEY'),
++            'key'    => env('PUSHER_KEY'),
+             'secret' => env('PUSHER_SECRET'),
+             'app_id' => env('PUSHER_APP_ID'),
+         ],
+ 
+         'redis' => [
+-            'driver' => 'redis',
++            'driver'     => 'redis',
+             'connection' => 'default',
+         ],
+ 
+diff --git a/config/cache.php b/config/cache.php
+index 379135b0eb6904733cc3ac4f569b4df04ad15d9e..7d4712f40ca1f48f01ef23b191ed004e6507924c 100644
+--- a/config/cache.php
++++ b/config/cache.php
+@@ -37,8 +37,8 @@ return [
+         ],
+ 
+         'database' => [
+-            'driver' => 'database',
+-            'table'  => 'cache',
++            'driver'     => 'database',
++            'table'      => 'cache',
+             'connection' => null,
+         ],
+ 
+@@ -57,7 +57,7 @@ return [
+         ],
+ 
+         'redis' => [
+-            'driver' => 'redis',
++            'driver'     => 'redis',
+             'connection' => 'default',
+         ],
+ 
+diff --git a/config/database.php b/config/database.php
+index 666f8ea5c13d189ebfec3170aeced3337593eb6c..aba2ff06a514b765e600c88ce3af65037b57dfb1 100644
+--- a/config/database.php
++++ b/config/database.php
+@@ -53,15 +53,15 @@ return [
+         ],
+ 
+         'mysql' => [
+-            'driver'    => 'mysql',
+-            'host'      => env('DB_HOST', 'localhost'),
+-            'database'  => env('DB_DATABASE', 'forge'),
+-            'username'  => env('DB_USERNAME', 'forge'),
+-            'password'  => env('DB_PASSWORD', ''),
+-            'charset'   => 'utf8',
+-            'collation' => 'utf8_unicode_ci',
+-            'prefix'    => '',
+-            'strict'    => false,
++            'driver'        => 'mysql',
++            'host'          => env('DB_HOST', 'localhost'),
++            'database'      => env('DB_DATABASE', 'forge'),
++            'username'      => env('DB_USERNAME', 'forge'),
++            'password'      => env('DB_PASSWORD', ''),
++            'charset'       => 'utf8',
++            'collation'     => 'utf8_unicode_ci',
++            'prefix'        => '',
++            'strict'        => false,
+             'unix_socket'   => '/Applications/MAMP/tmp/mysql/mysql.sock',
+         ],
+ 
+diff --git a/config/queue.php b/config/queue.php
+index cf9b09da01f7f4d45eda6a2b2d8f80e1dc68d139..a8bb233bb9134c666b23cace493e30a70514f28f 100644
+--- a/config/queue.php
++++ b/config/queue.php
+@@ -37,8 +37,8 @@ return [
+ 
+         'database' => [
+             'driver' => 'database',
+-            'table' => 'jobs',
+-            'queue' => 'default',
++            'table'  => 'jobs',
++            'queue'  => 'default',
+             'expire' => 60,
+         ],
+ 
+@@ -67,10 +67,10 @@ return [
+         ],
+ 
+         'redis' => [
+-            'driver' => 'redis',
++            'driver'     => 'redis',
+             'connection' => 'default',
+-            'queue'  => 'default',
+-            'expire' => 60,
++            'queue'      => 'default',
++            'expire'     => 60,
+         ],
+ 
+     ],
+diff --git a/database/factories/ModelFactory.php b/database/factories/ModelFactory.php
+index ae7165b82acb7a90799bca4afbe487ffe92affc1..60191818b82fd10e91f266b3608d299bf8409804 100644
+--- a/database/factories/ModelFactory.php
++++ b/database/factories/ModelFactory.php
+@@ -13,9 +13,9 @@
+ 
+ $factory->define(App\User::class, function ($faker) {
+     return [
+-        'name' => $faker->name,
+-        'email' => $faker->email,
+-        'password' => str_random(10),
++        'name'           => $faker->name,
++        'email'          => $faker->email,
++        'password'       => str_random(10),
+         'remember_token' => str_random(10),
+     ];
+ });
+diff --git a/database/migrations/2014_10_12_000000_create_users_table.php b/database/migrations/2014_10_12_000000_create_users_table.php
+index 65d3d083882138e3d24113d29b6f575dae014231..434ff2da59ba76f5aedcc8f4cc3601144e6a999f 100644
+--- a/database/migrations/2014_10_12_000000_create_users_table.php
++++ b/database/migrations/2014_10_12_000000_create_users_table.php
+@@ -1,7 +1,7 @@
+ <?php
+ 
+-use Illuminate\Database\Schema\Blueprint;
+ use Illuminate\Database\Migrations\Migration;
++use Illuminate\Database\Schema\Blueprint;
+ 
+ class CreateUsersTable extends Migration
+ {
+diff --git a/database/migrations/2014_10_12_100000_create_password_resets_table.php b/database/migrations/2014_10_12_100000_create_password_resets_table.php
+index 00057f9cffa277455d2b42a54a220e2186294cc3..c647b562d4a4c067b0ed9037cac12cb91675df2b 100644
+--- a/database/migrations/2014_10_12_100000_create_password_resets_table.php
++++ b/database/migrations/2014_10_12_100000_create_password_resets_table.php
+@@ -1,7 +1,7 @@
+ <?php
+ 
+-use Illuminate\Database\Schema\Blueprint;
+ use Illuminate\Database\Migrations\Migration;
++use Illuminate\Database\Schema\Blueprint;
+ 
+ class CreatePasswordResetsTable extends Migration
+ {
+diff --git a/database/migrations/2015_06_21_010307_create_artices_table.php b/database/migrations/2015_06_21_010307_create_artices_table.php
+index 47bcad3555b0d7a5d9c957daf64caf3609915205..b0aa3cbc56677dec8080f4ccd64773eff6638e68 100644
+--- a/database/migrations/2015_06_21_010307_create_artices_table.php
++++ b/database/migrations/2015_06_21_010307_create_artices_table.php
+@@ -1,7 +1,7 @@
+ <?php
+ 
+-use Illuminate\Database\Schema\Blueprint;
+ use Illuminate\Database\Migrations\Migration;
++use Illuminate\Database\Schema\Blueprint;
+ 
+ class CreateArticesTable extends Migration
+ {
+diff --git a/database/seeds/DatabaseSeeder.php b/database/seeds/DatabaseSeeder.php
+index fb9e60074f54649c8c3b8f62a4cb85c7c31aac4e..308e73b7e586534252e1449cc1aaa0467e1342e3 100644
+--- a/database/seeds/DatabaseSeeder.php
++++ b/database/seeds/DatabaseSeeder.php
+@@ -1,7 +1,7 @@
+ <?php
+ 
+-use Illuminate\Database\Seeder;
+ use Illuminate\Database\Eloquent\Model;
++use Illuminate\Database\Seeder;
+ 
+ class DatabaseSeeder extends Seeder
+ {
+diff --git a/public/index.php b/public/index.php
+index c5820533bc15708540da48509ba70883ae9ed81a..fc6eb491e39905e0fa716d4634fe0d2dc8c30bf8 100644
+--- a/public/index.php
++++ b/public/index.php
+@@ -1,9 +1,8 @@
+ <?php
+ 
+ /**
+- * Laravel - A PHP Framework For Web Artisans
++ * Laravel - A PHP Framework For Web Artisans.
+  *
+- * @package  Laravel
+  * @author   Taylor Otwell <taylorotwell@gmail.com>
+  */
+ 
+diff --git a/resources/lang/en/passwords.php b/resources/lang/en/passwords.php
+index 7c10cba1a03011b71cb44cedea3b75223e538935..195340ae47d3f2a8b325b73bcc2daed818cff551 100644
+--- a/resources/lang/en/passwords.php
++++ b/resources/lang/en/passwords.php
+@@ -14,9 +14,9 @@ return [
+     */
+ 
+     'password' => 'Passwords must be at least six characters and match the confirmation.',
+-    'user' => "We can't find a user with that e-mail address.",
+-    'token' => 'This password reset token is invalid.',
+-    'sent' => 'We have e-mailed your password reset link!',
+-    'reset' => 'Your password has been reset!',
++    'user'     => "We can't find a user with that e-mail address.",
++    'token'    => 'This password reset token is invalid.',
++    'sent'     => 'We have e-mailed your password reset link!',
++    'reset'    => 'Your password has been reset!',
+ 
+ ];
+diff --git a/server.php b/server.php
+index f65c7c444f2bf9108a1df96408008ebd25e3c18f..1b4655ba42c82fe7afb5784fd69f216778f99194 100644
+--- a/server.php
++++ b/server.php
+@@ -1,12 +1,10 @@
+ <?php
+ 
+ /**
+- * Laravel - A PHP Framework For Web Artisans
++ * Laravel - A PHP Framework For Web Artisans.
+  *
+- * @package  Laravel
+  * @author   Taylor Otwell <taylorotwell@gmail.com>
+  */
+-
+ $uri = urldecode(
+     parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
+ );
+diff --git a/tests/ExampleTest.php b/tests/ExampleTest.php
+index 7e81d37aadc805dd3045615117d676bd4c284f63..2c3a83c839c42b43d9c39784040c5739e467c180 100644
+--- a/tests/ExampleTest.php
++++ b/tests/ExampleTest.php
+@@ -1,8 +1,5 @@
+ <?php
+ 
+-use Illuminate\Foundation\Testing\WithoutMiddleware;
+-use Illuminate\Foundation\Testing\DatabaseMigrations;
+-use Illuminate\Foundation\Testing\DatabaseTransactions;
+ 
+ class ExampleTest extends TestCase
+ {

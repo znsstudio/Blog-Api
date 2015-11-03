@@ -27,6 +27,7 @@ class BlogRepository implements BlogInterface
      * Get article by id.
      *
      * @param int id
+     *
      * @return result
      */
     public function blogById($id)
@@ -34,14 +35,14 @@ class BlogRepository implements BlogInterface
         $article = Article::find($id);
 
         if (empty($article)) {
-        	return response('Not Found',404);
+            return response('Not Found', 404);
         }
-        
-        return $article;	
+
+        return $article;
     }
 
     /**
-     * Save article
+     * Save article.
      *
      * @return article
      */
@@ -64,6 +65,7 @@ class BlogRepository implements BlogInterface
      * Update article by id.
      *
      * @param int id
+     *
      * @return article
      */
     public function blogUpdate($id)
@@ -89,6 +91,7 @@ class BlogRepository implements BlogInterface
      * Delete article by id.
      *
      * @param int id
+     *
      * @return status
      */
     public function blogDelete($id)
@@ -102,7 +105,7 @@ class BlogRepository implements BlogInterface
 
             return response('Deleted');
         } else {
-            return response('Not Found',404);
+            return response('Not Found', 404);
         }
     }
 }

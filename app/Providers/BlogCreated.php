@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Providers;
+namespace app\Providers;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class BlogCreated extends Event
 {

@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Listeners;
+namespace app\Listeners;
 
 use App\Events\BlogCreated;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Log;
 
 class LogBlogCreated
@@ -22,7 +20,8 @@ class LogBlogCreated
     /**
      * Handle the event.
      *
-     * @param  BlogCreated  $event
+     * @param BlogCreated $event
+     *
      * @return void
      */
     public function handle(BlogCreated $event)
