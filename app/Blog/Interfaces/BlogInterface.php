@@ -1,15 +1,16 @@
-<?php namespace App\Blog\Interfaces;
+<?php
 
-interface BlogInterface {
-	
-	public function blogAll();
+namespace app\Blog\Interfaces;
 
-	public function blogById($id);
+interface BlogInterface
+{
+    public function blogAll();
 
-	public function blogStore();
+    public function blogById($id);
 
-	public function blogUpdate($id);
+    public function blogStore();
 
-	public function blogDelete($id);
+    public function blogUpdate($id);
 
+    public function blogDelete($id);
 }

@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Listeners;
+namespace app\Listeners;
 
 use App\Events\BlogDeleted;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Log;
 
 class LogBlogDeleted
@@ -22,7 +20,8 @@ class LogBlogDeleted
     /**
      * Handle the event.
      *
-     * @param  BlogDeleted  $event
+     * @param BlogDeleted $event
+     *
      * @return void
      */
     public function handle(BlogDeleted $event)

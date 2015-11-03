@@ -15,7 +15,7 @@ class BlogValidation
     public function validateStore()
     {
         $validator = Validator::make(Request::all(), [
-                'title' => 'required|unique:articles|max:100',
+                'title'   => 'required|unique:articles|max:100',
                 'content' => 'required',
             ]);
 
@@ -29,7 +29,7 @@ class BlogValidation
     public function validateUpdate()
     {
         $validator = Validator::make(Request::all(), [
-                    'title' => 'required|unique:articles|max:100',
+                    'title'   => 'required|unique:articles|max:100',
                     'content' => 'required',
                 ]);
 
