@@ -112,4 +112,4 @@ Response ( on fail )
 Not Found
 ~~~
 
-p.s. if you need more features please create new issues on repositoty
+p.s. if you need more features please create new issues
